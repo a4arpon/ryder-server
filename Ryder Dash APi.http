@@ -3,3 +3,18 @@ GET https://examples.http-client.intellij.net/get
     ?generated-in=PyCharm
 
 ###
+GET http://127.0.0.1:8000/api/
+
+### Create a new Driver
+POST http://127.0.0.1:8000/create-driver/
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "email": "johndoe@example.com",
+  "phone_number": "1234567890",
+  "driving_license": "1234567890",
+}
+
+### Get all the Drivers
+GET http://127.0.0.1:8000/get-drivers/
