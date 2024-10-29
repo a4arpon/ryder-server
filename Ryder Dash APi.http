@@ -1,20 +1,38 @@
-### GET request to example server
-GET https://examples.http-client.intellij.net/get
-    ?generated-in=PyCharm
-
 ###
 GET http://127.0.0.1:8000/api/
 
 ### Create a new Driver
-POST http://127.0.0.1:8000/create-driver/
+POST http://127.0.0.1:8000/api/create-driver/
 Content-Type: application/json
 
 {
-  "name": "John Doe",
-  "email": "johndoe@example.com",
-  "phone_number": "1234567890",
-  "driving_license": "1234567890",
+  "name": "Mohammed Ali",
+  "email": "mohammedali@example.com",
+  "phone_number": "3453432233",
+  "driving_license": "1234567890"
 }
 
+
 ### Get all the Drivers
-GET http://127.0.0.1:8000/get-drivers/
+GET http://127.0.0.1:8000/api/get-drivers/
+
+
+### Get Singel Driver
+GET http://127.0.0.1:8000/api/get-drivers/Z9G3LI
+
+
+### Create a new Passenger
+POST http://127.0.0.1:8000/api/create-passenger/
+Content-Type: application/json
+
+{
+  "name": "Rachel",
+  "email": "rachel@example.com",
+  "phone": "1233567890"
+}
+
+### Get all the Passengers
+GET http://127.0.0.1:8000/api/get-passengers/
+
+### Get a specific Passenger
+GET http://127.0.0.1:8000/api/get-passengers/YV2IAE/

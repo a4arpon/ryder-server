@@ -49,6 +49,11 @@ class Passenger(models.Model):
   email = models.EmailField(unique=True)
   phone = models.CharField(max_length=15, unique=True)
 
+  def save(self, *args, **kwargs):
+    if not self.userID:
+      self.userID = generate_unique_id()
+    super(Passenger, self).save(*args, **kwargs)
+
   def __str__(self):
     return self.name
 
