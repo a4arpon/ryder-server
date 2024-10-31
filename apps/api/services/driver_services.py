@@ -60,13 +60,8 @@ def get_driver_service(driver_id):
       "data": driver_data
     }, status=status.HTTP_200_OK)
 
-  except Driver.DoesNotExist:
-    return Response({
-      "status": status.HTTP_404_NOT_FOUND,
-      "success": False,
-      "message": "Driver not found",
-      "data": None
-    }, status=status.HTTP_404_NOT_FOUND)
+  except Driver.DoesNotExist as e:
+    return Response(e.message, status=status.HTTP_404_NOT_FOUND)
 
   except Exception as e:
     return Response({

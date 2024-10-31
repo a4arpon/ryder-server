@@ -7,8 +7,7 @@ from rest_framework.decorators import api_view
 from .serializers import TripSerializer
 from .services.driver_services import create_driver_service, get_drivers_service, get_driver_service
 from .services.passenger_services import get_passengers_service, get_passenger_service, create_passenger_service
-from .services.realtime_services import update_realtime_trip_service, get_realtime_trip_service
-from .services.trips_services import create_trip_service
+from .services.trips_services import create_trip_service, get_all_trips_service, get_trip_service
 
 
 def index(request):
@@ -94,20 +93,11 @@ def create_trip(request):
   return create_trip_service(request.body)
 
 
-# -------------------------------------------------------------------------
-#
-# Realtime API
-#
-# Methods:
-#   - GET /api/realtime/
-# -------------------------------------------------------------------------
-
-
-@api_view(['POST'])
-def update_realtime_trip(request):
-  return update_realtime_trip_service()
+@api_view(['GET'])
+def get_all_trips(request):
+  return get_all_trips_service()
 
 
 @api_view(['GET'])
-def get_realtime_trip(request, trip_id):
-  return get_realtime_trip_service(trip_id)
+def get_trip(request, trip_id):
+  return get_trip_service(trip_id)

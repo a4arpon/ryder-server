@@ -25,4 +25,6 @@ urlpatterns = [
   # Trips API
   # ----------------------------------------------------------------------
   path('create-trip/', views.create_trip, name='create-trip'),
+  path('get-trips/', views.get_all_trips, name='get-trips'),
+  path('get-trips/<str:trip_id>/', views.get_trip, name='get-trip'),
 ]

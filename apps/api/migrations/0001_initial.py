@@ -5,62 +5,71 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  initial = True
 
-    initial = True
+  dependencies = [
+  ]
 
-    dependencies = [
-    ]
-
-    operations = [
-        migrations.CreateModel(
-            name='Driver',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('driverID', models.CharField(max_length=10, null=True)),
-                ('name', models.CharField(max_length=100)),
-                ('email', models.EmailField(default='UNKNOWN', max_length=254, unique=True)),
-                ('phone_number', models.CharField(default='UNKNOWN', max_length=15, unique=True)),
-                ('driving_license', models.CharField(default='UNKNOWN', max_length=50, unique=True)),
-                ('balance', models.DecimalField(decimal_places=2, default=0.0, max_digits=10)),
-                ('last_trip_location', models.CharField(blank=True, max_length=255, null=True)),
-                ('today_started_at', models.DateTimeField(blank=True, null=True)),
-                ('last_trip_end_at', models.DateTimeField(blank=True, null=True)),
-                ('status', models.CharField(choices=[('available', 'Available'), ('on_trip', 'On Trip'), ('offline', 'Offline'), ('idle', 'Idle')], default='offline', max_length=10)),
-                ('trip_status', models.CharField(blank=True, choices=[('way_to_pickup', 'Way to Pick Up'), ('reached_pickup', 'Reached Pickup'), ('way_to_dropoff', 'Way to Drop Off')], max_length=20, null=True)),
-            ],
-        ),
-        migrations.CreateModel(
-            name='Passenger',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('userID', models.CharField(max_length=10, null=True)),
-                ('name', models.CharField(max_length=100)),
-                ('email', models.EmailField(max_length=254, unique=True)),
-                ('phone', models.CharField(max_length=15, unique=True)),
-            ],
-        ),
-        migrations.CreateModel(
-            name='Trip',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('tripID', models.CharField(max_length=10, null=True)),
-                ('tripFee', models.DecimalField(decimal_places=2, max_digits=10)),
-                ('driversEarning', models.DecimalField(decimal_places=2, max_digits=10)),
-                ('startedFrom', models.CharField(max_length=255)),
-                ('startedFromLat', models.CharField(max_length=20)),
-                ('startedFromLong', models.CharField(max_length=20)),
-                ('startingTime', models.DateTimeField()),
-                ('currentLocationLat', models.CharField(blank=True, max_length=20, null=True)),
-                ('currentLocationLong', models.CharField(blank=True, max_length=20, null=True)),
-                ('destination', models.CharField(max_length=255)),
-                ('destinationLat', models.CharField(max_length=20)),
-                ('destinationLong', models.CharField(max_length=20)),
-                ('lastChecked', models.DateTimeField(blank=True, null=True)),
-                ('tripStatus', models.CharField(choices=[('waiting_for_passenger', 'Waiting for Passenger'), ('completed', 'Completed'), ('rejected', 'Rejected'), ('way_to_pick_up', 'Way to Pick Up'), ('cancelled', 'Cancelled'), ('way_to_drop_off', 'Way to Drop Off')], default='waiting_for_passenger', max_length=25)),
-                ('createdAt', models.DateTimeField(auto_now_add=True)),
-                ('updatedAt', models.DateTimeField(auto_now=True)),
-                ('driver', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='trips', to='api.driver')),
-                ('passenger', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='trips', to='api.passenger')),
-            ],
-        ),
-    ]
+  operations = [
+    migrations.CreateModel(
+      name='Driver',
+      fields=[
+        ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+        ('driverID', models.CharField(max_length=10, null=True)),
+        ('name', models.CharField(max_length=100)),
+        ('email', models.EmailField(default='UNKNOWN', max_length=254, unique=True)),
+        ('phone_number', models.CharField(default='UNKNOWN', max_length=15, unique=True)),
+        ('driving_license', models.CharField(default='UNKNOWN', max_length=50, unique=True)),
+        ('balance', models.DecimalField(decimal_places=2, default=0.0, max_digits=10)),
+        ('last_trip_location', models.CharField(blank=True, max_length=255, null=True)),
+        ('today_started_at', models.DateTimeField(blank=True, null=True)),
+        ('last_trip_end_at', models.DateTimeField(blank=True, null=True)),
+        ('status', models.CharField(
+          choices=[('available', 'Available'), ('on_trip', 'On Trip'), ('offline', 'Offline'), ('idle', 'Idle')],
+          default='offline', max_length=10)),
+        ('trip_status', models.CharField(blank=True, choices=[('way_to_pickup', 'Way to Pick Up'),
+                                                              ('reached_pickup', 'Reached Pickup'),
+                                                              ('way_to_dropoff', 'Way to Drop Off')], max_length=20,
+                                         null=True)),
+      ],
+    ),
+    migrations.CreateModel(
+      name='Passenger',
+      fields=[
+        ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+        ('userID', models.CharField(max_length=10, null=True)),
+        ('name', models.CharField(max_length=100)),
+        ('email', models.EmailField(max_length=254, unique=True)),
+        ('phone', models.CharField(max_length=15, unique=True)),
+      ],
+    ),
+    migrations.CreateModel(
+      name='Trip',
+      fields=[
+        ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+        ('tripID', models.CharField(max_length=10, null=True)),
+        ('tripFee', models.DecimalField(decimal_places=2, max_digits=10)),
+        ('driversEarning', models.DecimalField(decimal_places=2, max_digits=10)),
+        ('startedFrom', models.CharField(max_length=255)),
+        ('startedFromLat', models.CharField(max_length=20)),
+        ('startedFromLong', models.CharField(max_length=20)),
+        ('startingTime', models.DateTimeField()),
+        ('currentLocationLat', models.CharField(blank=True, max_length=20, null=True)),
+        ('currentLocationLong', models.CharField(blank=True, max_length=20, null=True)),
+        ('destination', models.CharField(max_length=255)),
+        ('destinationLat', models.CharField(max_length=20)),
+        ('destinationLong', models.CharField(max_length=20)),
+        ('lastChecked', models.DateTimeField(blank=True, null=True)),
+        ('tripStatus', models.CharField(
+          choices=[('waiting_for_passenger', 'Waiting for Passenger'), ('completed', 'Completed'),
+                   ('rejected', 'Rejected'), ('way_to_pick_up', 'Way to Pick Up'), ('cancelled', 'Cancelled'),
+                   ('way_to_drop_off', 'Way to Drop Off')], default='waiting_for_passenger', max_length=25)),
+        ('createdAt', models.DateTimeField(auto_now_add=True)),
+        ('updatedAt', models.DateTimeField(auto_now=True)),
+        ('driver',
+         models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='trips', to='api.driver')),
+        ('passenger', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='trips',
+                                        to='api.passenger')),
+      ],
+    ),
+  ]

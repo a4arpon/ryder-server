@@ -31,3 +31,23 @@ class TripSerializer(serializers.ModelSerializer):
     validated_data['startingTime'] = datetime.now()
     validated_data['lastChecked'] = datetime.now()
     return super().create(validated_data)
+
+
+class TripSerializerWithDriverName(serializers.ModelSerializer):
+  driver_name = serializers.CharField(source="driver.name", read_only=True)
+
+  class Meta:
+    model = Trip
+    fields = [
+      'tripID', 'driver', 'driver_name', 'tripFee', 'driversEarning', 'startedFrom', 'startedFromLat',
+      'startedFromLong', 'passenger', 'destination', 'destinationLat', 'destinationLong', 'tripStatus', 'createdAt'
+    ]
+
+
+class TripSerializerWithAllInfo(serializers.ModelSerializer):
+  driver = DriverSerializer(read_only=True)
+  passenger = PassengerSerializer(read_only=True)
+
+  class Meta:
+    model = Trip
+    fields = '__all__'
