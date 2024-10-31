@@ -1,23 +1,23 @@
-from datetime import datetime
+import json
 
-from django_redis import cache
+import redis
+from asgiref.sync import sync_to_async
 
 from apps.api.models import Trip
 
-
-def update_realtime_trip_service(trip_id, data):
-  trip_key = f"trip-cache:{trip_id}"
-  data["lastChecked"] = datetime.now().isoformat()
-  cache.set(trip_key, data, timeout=None)
+redis_client = redis.Redis(host='127.0.0.1', port=6379, db=0, password='userP@ssw0rd')
 
 
+@sync_to_async
 def get_realtime_trip_service(trip_id):
   trip_key = f"trip-cache:{trip_id}"
-  trip_data = cache.get(trip_key)
+  trip_data = redis_client.get(trip_key)
 
-  if not trip_data:
+  if trip_data:
+    trip_data = json.loads(trip_data)
+  else:
     try:
-      trip = Trip.objects.get(tripID=trip_id)
+      trip = Trip.objects.select_related("driver", "passenger").get(tripID=trip_id)
       trip_data = {
         "currentLocationLat": trip.currentLocationLat,
         "currentLocationLong": trip.currentLocationLong,
@@ -26,7 +26,7 @@ def get_realtime_trip_service(trip_id):
         "driverID": trip.driver.driverID,
         "passengerID": trip.passenger.userID if trip.passenger else None,
       }
-      cache.set(trip_key, trip_data, timeout=None)
+      redis_client.set(trip_key, json.dumps(trip_data))
     except Trip.DoesNotExist:
       trip_data = {"error": "Trip not found"}
 
