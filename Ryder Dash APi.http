@@ -36,3 +36,21 @@ GET http://127.0.0.1:8000/api/get-passengers/
 
 ### Get a specific Passenger
 GET http://127.0.0.1:8000/api/get-passengers/YV2IAE/
+
+### Create A Trip
+POST http://127.0.0.1:8000/api/create-trip/
+Content-Type: application/json
+
+{
+  "driver": 4,
+  "tripFee": 100.00,
+  "driversEarning": 60,
+  "startedFrom": "Dhaka",
+  "startedFromLat": "23.7104",
+  "startedFromLong": "90.4071",
+  "passenger": 6,
+  "destination": "New York",
+  "destinationLat": "40.712776",
+  "destinationLong": "-74.005974",
+  "tripStatus": "active"
+}

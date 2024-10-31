@@ -20,4 +20,9 @@ urlpatterns = [
   path('create-passenger/', views.create_passenger, name='create-passenger'),
   path('get-passengers/', views.get_passengers, name='get-passengers'),
   path('get-passengers/<str:user_id>/', views.get_passenger, name='get-passenger'),
+
+  # ----------------------------------------------------------------------
+  # Trips API
+  # ----------------------------------------------------------------------
+  path('create-trip/', views.create_trip, name='create-trip'),
 ]

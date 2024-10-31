@@ -33,7 +33,7 @@ def get_drivers_service():
       "status": status.HTTP_200_OK,
       "success": True,
       "message": "Drivers retrieved successfully",
-      "data": serializer.data
+      "data": serializer.data  # Ensure only serialized data is returned here
     }, status=status.HTTP_200_OK)
 
   except Exception as e:
@@ -46,15 +46,18 @@ def get_drivers_service():
     }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+from django.forms.models import model_to_dict
+
+
 def get_driver_service(driver_id):
   try:
     driver = Driver.objects.get(driverID=driver_id)
-    serializer = DriverSerializer(driver)
+    driver_data = model_to_dict(driver)  # Retrieves all fields from the model instance
     return Response({
       "status": status.HTTP_200_OK,
       "success": True,
       "message": "Driver retrieved successfully",
-      "data": serializer.data
+      "data": driver_data
     }, status=status.HTTP_200_OK)
 
   except Driver.DoesNotExist:

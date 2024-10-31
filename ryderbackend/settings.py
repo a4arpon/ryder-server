@@ -40,11 +40,16 @@ INSTALLED_APPS = [
   'django.contrib.messages',
   'django.contrib.staticfiles',
   'rest_framework',
-  'apps.api'
+  'apps.api',
+  'channels',
+  "channels_redis",
+  'drf_yasg',
+  'corsheaders'
 ]
 
 MIDDLEWARE = [
   'django.middleware.security.SecurityMiddleware',
+  'corsheaders.middleware.CorsMiddleware',  # Move it right after SecurityMiddleware
   'django.contrib.sessions.middleware.SessionMiddleware',
   'django.middleware.common.CommonMiddleware',
   'django.middleware.csrf.CsrfViewMiddleware',
@@ -52,6 +57,13 @@ MIDDLEWARE = [
   'django.contrib.messages.middleware.MessageMiddleware',
   'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# CORS settings
+CORS_ALLOW_ALL_ORIGINS = True  # Temporarily allow all origins for debugging
+
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_HEADERS = ["*"]  # Allow all headers for debugging
+CORS_ALLOW_METHODS = ["*"]  # Allow all methods for debugging
 
 ROOT_URLCONF = 'ryderbackend.urls'
 
@@ -76,6 +88,14 @@ WSGI_APPLICATION = 'ryderbackend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+CHANNEL_LAYERS = {
+  'default': {
+    'BACKEND': 'channels_redis.core.RedisChannelLayer',
+    'CONFIG': {
+      'hosts': [('127.0.0.1', 6379)],
+    },
+  },
+}
 
 env = environ.Env()
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
@@ -91,7 +111,18 @@ DATABASES = {
   }
 }
 
-# Password validation
+CACHES = {
+  "default": {
+    "BACKEND": "django_redis.cache.RedisCache",
+    "LOCATION": "redis://127.0.0.1:6379/1",  # adjust host and port if needed
+    "OPTIONS": {
+      "CLIENT_CLASS": "django_redis.client.DefaultClient",
+      "PASSWORD": "userP@ssw0rd",
+    }
+  }
+}
+
+ASGI_APPLICATION = 'ryderbackend.asgi.application'  # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [

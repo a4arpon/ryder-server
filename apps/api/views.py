@@ -1,9 +1,14 @@
 from django.http import JsonResponse
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.decorators import api_view
 
+from .serializers import TripSerializer
 from .services.driver_services import create_driver_service, get_drivers_service, get_driver_service
 from .services.passenger_services import get_passengers_service, get_passenger_service, create_passenger_service
+from .services.realtime_services import update_realtime_trip_service, get_realtime_trip_service
+from .services.trips_services import create_trip_service
 
 
 def index(request):
@@ -63,3 +68,46 @@ def get_passengers(request):
 @api_view(['GET'])
 def get_passenger(request, user_id):
   return get_passenger_service(user_id)
+
+
+# -------------------------------------------------------------------------
+#
+# Trip API
+#
+# Methods:
+#   - POST /api/create-trip/
+#   - GET /api/get-trips/
+#   - GET /api/get-trip/:trip_id
+# -------------------------------------------------------------------------
+
+
+@swagger_auto_schema(
+  method='post',
+  request_body=TripSerializer,
+  responses={
+    201: TripSerializer,
+    400: openapi.Response(description="Bad Request")
+  }
+)
+@api_view(['POST'])
+def create_trip(request):
+  return create_trip_service(request.body)
+
+
+# -------------------------------------------------------------------------
+#
+# Realtime API
+#
+# Methods:
+#   - GET /api/realtime/
+# -------------------------------------------------------------------------
+
+
+@api_view(['POST'])
+def update_realtime_trip(request):
+  return update_realtime_trip_service()
+
+
+@api_view(['GET'])
+def get_realtime_trip(request, trip_id):
+  return get_realtime_trip_service(trip_id)
