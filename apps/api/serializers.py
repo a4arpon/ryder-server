@@ -35,12 +35,14 @@ class TripSerializer(serializers.ModelSerializer):
 
 class TripSerializerWithDriverName(serializers.ModelSerializer):
   driver_name = serializers.CharField(source="driver.name", read_only=True)
+  driver_id = serializers.CharField(source="driver.driverID", read_only=True)
 
   class Meta:
     model = Trip
     fields = [
       'tripID', 'driver', 'driver_name', 'tripFee', 'driversEarning', 'startedFrom', 'startedFromLat',
-      'startedFromLong', 'passenger', 'destination', 'destinationLat', 'destinationLong', 'tripStatus', 'createdAt'
+      'startedFromLong', 'passenger', 'destination', 'destinationLat', 'destinationLong', 'tripStatus', 'createdAt',
+      'driver_id'
     ]
 
 

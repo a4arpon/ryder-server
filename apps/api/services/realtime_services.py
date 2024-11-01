@@ -9,6 +9,14 @@ redis_client = redis.Redis(host='127.0.0.1', port=6379, db=0, password='userP@ss
 
 
 @sync_to_async
+def get_driver_location_service(driver_id):
+  driver_key = f"driver-cache:{driver_id}"
+  driver_data = redis_client.get(driver_key)
+
+  return driver_data
+
+
+@sync_to_async
 def get_realtime_trip_service(trip_id):
   trip_key = f"trip-cache:{trip_id}"
   trip_data = redis_client.get(trip_key)
@@ -26,7 +34,13 @@ def get_realtime_trip_service(trip_id):
         "driverID": trip.driver.driverID,
         "passengerID": trip.passenger.userID if trip.passenger else None,
       }
+      # Save the trip data in Redis cache
       redis_client.set(trip_key, json.dumps(trip_data))
+
+      # Save the trip ID under a driver-specific key
+      driver_key = f"driver-cache:{trip.driver.driverID}"
+      redis_client.set(driver_key, trip_id)
+
     except Trip.DoesNotExist:
       trip_data = {"error": "Trip not found"}
 
